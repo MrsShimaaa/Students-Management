@@ -1,0 +1,140 @@
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <title>Mrs Shimaa</title>
+    <style>
+      body {
+        font-family: 'Cairo', Arial, sans-serif;
+        font-size: 16px;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    p {
+      color: red;
+      text-align: center;
+    }
+    </style>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <form onsubmit="submitForm(event)">
+    <label for="studentName">اسم الطالب:</label>
+    <input type="text" id="studentName" name="studentName" required><br><br>
+    
+    <label for="ageGroup">اختيار المرحلة العمرية:</label>
+    <select id="ageGroup" name="ageGroup" required>
+      <option value="">اختر المرحلة العمرية</option>
+      <option value="الصف الأول الإعدادى">الصف الأول الإعدادى</option>
+      <option value="الصف الثانى الإعدادى">الصف الثانى الإعدادى</option>
+      <option value="الصف الثالث الإعدادى">الصف الثالث الإعدادى</option>
+      <option value="الصف الأول الثانوى">الصف الأول الثانوى</option>
+      <option value="الصف الثانى الثانوى">الصف الثانى الثانوى</option>
+      <option value="الصف الثالث الثانوى">الصف الثالث الثانوى</option>
+    </select><br><br>
+    
+    <label for="studentPhone">رقم هاتف الطالب:</label>
+    <input type="tel" id="studentPhone" name="studentPhone" pattern="[0-9]{11}" required><br><br>
+    
+    <label for="guardianPhone">رقم هاتف ولى الأمر:</label>
+    <input type="tel" id="guardianPhone" name="guardianPhone" pattern="[0-9]{11}" required><br><br>
+    
+    <p>ملاحظة: ممنوع استخدام رقم هاتف الطالب كرقم هاتف ولى الأمر</p>
+
+    <input type="submit" value="تم التسجيل">
+  </form>
+
+  <script type="text/javascript">
+      function submitForm(event) {
+      event.preventDefault();
+
+      var studentName = document.getElementById("studentName").value;
+      var ageGroup = document.getElementById("ageGroup").value;
+      var studentPhone = document.getElementById("studentPhone").value;
+      var guardianPhone = document.getElementById("guardianPhone").value;
+
+      if (studentName === "" || ageGroup === "" || studentPhone === "" || guardianPhone === "") {
+        alert("يرجى ملء جميع الحقول");
+        return;
+      }
+
+      if (studentPhone.length !== 11 || guardianPhone.length !== 11) {
+        alert("يجب أن يتكون رقم الهاتف من 11 رقمًا");
+        return;
+      }
+
+      switch (ageGroup) {
+        case "الصف الأول الإعدادى":
+          window.open("1prep.html");
+          break;
+        case "الصف الثانى الإعدادى":
+          window.open("2prep.html");
+          break;
+        case "الصف الثالث الإعدادى":
+          window.open("3prep.html");
+          break;
+        case "الصف الأول الثانوى":
+          window.open("1sec.html");
+          break;
+        case "الصف الثانى الثانوى":
+          window.open("2sec.html");
+          break;
+        case "الصف الثالث الثانوى":
+          window.open("3sec.html");
+          break;
+        default:
+          alert("يرجى اختيار المرحلة العمرية");
+          break;
+      }
+      var formData = new FormData();
+      formData.append("studentName", studentName);
+      formData.append("ageGroup", ageGroup);
+      formData.append("studentPhone", studentPhone);
+      formData.append("guardianPhone", guardianPhone);
+      
+      axios.post("https://formspree.io/f/xqkvkbja", formData)
+        .then(function (response) {
+          alert("تم إرسال البيانات بنجاح!");
+          window.location.reload();
+        })
+        .catch(function (error) {
+          alert("حدث خطأ أثناء إرسال البيانات. يرجى المحاولة مرة أخرى.");
+          console.error(error);
+        });
+    }
+  </script>
+</body>
+</html>
